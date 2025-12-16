@@ -2,12 +2,6 @@
 
 A comprehensive, full-stack business analytics platform designed specifically for coffee ventures. Track sales, manage customers, analyze product performance, and make data-driven decisions to grow your coffee business.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-316192)
-![Prisma](https://img.shields.io/badge/Prisma-5.7-2D3748)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)
-
 ---
 
 ## 📋 Table of Contents
@@ -596,7 +590,7 @@ GET /api/analytics
 6. Add `DATABASE_URL` environment variable
 7. Click "Deploy"
 
-Your site will be live at: `https://your-project.vercel.app`
+Our site will be live at: `https://your-project.vercel.app`
 
 ---
 
