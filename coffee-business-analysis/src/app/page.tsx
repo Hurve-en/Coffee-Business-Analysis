@@ -1,7 +1,3 @@
-/**
- * HOME PAGE - Coffee Business Analysis Platform
- */
-
 import Link from 'next/link'
 import { ArrowRight, BarChart3, Users, Coffee, TrendingUp, DollarSign, FileText } from 'lucide-react'
 
@@ -10,13 +6,10 @@ export default function HomePage() {
     <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
       
       {/* HERO SECTION */}
-      {/* This is the main attention-grabbing section at the top */}
       <section className="relative overflow-hidden">
-        {/* Background decoration - subtle grain texture */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(184,134,11,0.08),transparent_50%)]" />
         
         <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24 sm:pt-32 sm:pb-32">
-          {/* Animated badge - draws attention to key value prop */}
           <div className="flex justify-center mb-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
               <Coffee className="w-4 h-4" />
@@ -24,7 +17,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Main heading - uses staggered animation for impact */}
           <h1 className="text-center text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 animate-slide-up">
             Transform Your
             <span className="block bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent animate-slide-up-delay-1">
@@ -32,25 +24,20 @@ export default function HomePage() {
             </span>
           </h1>
 
-          {/* Subheading - clear value proposition */}
           <p className="text-center text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed animate-slide-up-delay-2">
             Comprehensive analytics and insights to help you make data-driven decisions, 
             track performance, and grow your coffee venture with confidence.
           </p>
 
-          {/* CTA buttons - primary and secondary actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up-delay-3">
-            {/* Primary CTA - most important action */}
             <Link 
               href="/dashboard/overview"
               className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5"
             >
               View Dashboard
-              {/* Icon animates on hover - subtle delight */}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
 
-            {/* Secondary CTA - alternative action */}
             <Link 
               href="#features"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold border-2 border-gray-200 hover:border-amber-300 hover:bg-amber-50 transition-all duration-300 hover:scale-105"
@@ -62,10 +49,8 @@ export default function HomePage() {
       </section>
 
       {/* FEATURES SECTION */}
-      {/* Grid of feature cards showcasing platform capabilities */}
       <section id="features" className="relative py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Section header */}
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               Everything You Need to Succeed
@@ -75,16 +60,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Feature cards grid - responsive layout */}
-          {/* 
-            Grid behavior:
-            - Mobile: 1 column
-            - Tablet: 2 columns
-            - Desktop: 3 columns
-          */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            {/* FEATURE CARD 1: Sales Analytics */}
             <FeatureCard
               icon={<TrendingUp className="w-8 h-8" />}
               title="Sales Analytics"
@@ -93,7 +70,6 @@ export default function HomePage() {
               delay="0ms"
             />
 
-            {/* FEATURE CARD 2: Customer Insights */}
             <FeatureCard
               icon={<Users className="w-8 h-8" />}
               title="Customer Insights"
@@ -102,7 +78,6 @@ export default function HomePage() {
               delay="100ms"
             />
 
-            {/* FEATURE CARD 3: Product Performance */}
             <FeatureCard
               icon={<Coffee className="w-8 h-8" />}
               title="Product Performance"
@@ -111,7 +86,6 @@ export default function HomePage() {
               delay="200ms"
             />
 
-            {/* FEATURE CARD 4: Financial Reports */}
             <FeatureCard
               icon={<DollarSign className="w-8 h-8" />}
               title="Financial Reports"
@@ -120,7 +94,6 @@ export default function HomePage() {
               delay="300ms"
             />
 
-            {/* FEATURE CARD 5: Real-time Dashboard */}
             <FeatureCard
               icon={<BarChart3 className="w-8 h-8" />}
               title="Real-time Dashboard"
@@ -129,7 +102,6 @@ export default function HomePage() {
               delay="400ms"
             />
 
-            {/* FEATURE CARD 6: Market Research */}
             <FeatureCard
               icon={<FileText className="w-8 h-8" />}
               title="Market Research"
@@ -143,24 +115,20 @@ export default function HomePage() {
       </section>
 
       {/* STATS SECTION */}
-      {/* Social proof through numbers */}
       <section className="relative py-20 px-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
             
-            {/* Stat 1 */}
             <div className="animate-fade-in-up">
               <div className="text-5xl font-bold mb-2">10K+</div>
               <div className="text-amber-100 text-lg">Orders Tracked</div>
             </div>
 
-            {/* Stat 2 */}
             <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
               <div className="text-5xl font-bold mb-2">500+</div>
               <div className="text-amber-100 text-lg">Products Analyzed</div>
             </div>
 
-            {/* Stat 3 */}
             <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
               <div className="text-5xl font-bold mb-2">98%</div>
               <div className="text-amber-100 text-lg">Customer Satisfaction</div>
@@ -171,7 +139,6 @@ export default function HomePage() {
       </section>
 
       {/* FINAL CTA SECTION */}
-      {/* Last chance to convert visitors */}
       <section className="relative py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
@@ -194,25 +161,6 @@ export default function HomePage() {
   )
 }
 
-/**
- * FEATURE CARD COMPONENT
- * 
- * Reusable card component for feature showcase
- * 
- * Props:
- * @param {ReactNode} icon - Lucide icon component
- * @param {string} title - Feature title
- * @param {string} description - Feature description
- * @param {string} gradient - Tailwind gradient classes for icon background
- * @param {string} delay - Animation delay for staggered entrance
- * 
- * Design decisions:
- * - Card hovers up slightly (translate-y) for depth
- * - Shadow increases on hover for lifted effect
- * - Icon has gradient background for visual interest
- * - Border changes color on hover for interactivity
- * - All transitions are smooth (300ms) for natural feel
- */
 function FeatureCard({ 
   icon, 
   title, 
@@ -231,22 +179,18 @@ function FeatureCard({
       className="group relative bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-amber-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl animate-fade-in-up"
       style={{ animationDelay: delay }}
     >
-      {/* Icon container with gradient background */}
       <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} text-white mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
         {icon}
       </div>
 
-      {/* Card title */}
       <h3 className="text-xl font-bold text-gray-900 mb-3">
         {title}
       </h3>
 
-      {/* Card description */}
       <p className="text-gray-600 leading-relaxed">
         {description}
       </p>
 
-      {/* Subtle hover indicator - appears on card hover */}
       <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <ArrowRight className="w-5 h-5 text-amber-600" />
       </div>
