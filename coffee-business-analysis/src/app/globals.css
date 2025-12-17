@@ -93,7 +93,7 @@
   }
 
   *:focus-visible {
-    @apply ring-2 ring-amber-500 ring-offset-2;
+    @apply ring-2 ring-slate-500 ring-offset-2;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -127,11 +127,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-amber-300 rounded-full;
+  @apply bg-slate-400 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-amber-400;
+  @apply bg-slate-500;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -149,7 +149,7 @@
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-slate-600 to-slate-800 bg-clip-text text-transparent;
 }
 
 .glass {
@@ -179,5 +179,5 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 0 20px rgba(100, 116, 139, 0.3);
 }

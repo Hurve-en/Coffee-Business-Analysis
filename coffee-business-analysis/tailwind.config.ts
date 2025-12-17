@@ -9,17 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Custom slate shades for coffee business theme
         coffee: {
-          50: '#faf7f4',
-          100: '#f4ede5',
-          200: '#e8d9ca',
-          300: '#d7bea5',
-          400: '#c49d7a',
-          500: '#b6825d',
-          600: '#a96f51',
-          700: '#8d5945',
-          800: '#72493c',
-          900: '#5d3d32',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         },
       },
     },

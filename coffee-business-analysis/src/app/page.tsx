@@ -3,15 +3,15 @@ import { ArrowRight, BarChart3, Users, Coffee, TrendingUp, DollarSign, FileText 
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
       
       {/* HERO SECTION */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(184,134,11,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(100,116,139,0.08),transparent_50%)]" />
         
         <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24 sm:pt-32 sm:pb-32">
           <div className="flex justify-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 border border-amber-200 text-amber-900 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-900 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
               <Coffee className="w-4 h-4" />
               <span>Brew Better Business Decisions</span>
             </div>
@@ -19,20 +19,20 @@ export default function HomePage() {
 
           <h1 className="text-center text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 animate-slide-up">
             Transform Your
-            <span className="block bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent animate-slide-up-delay-1">
+            <span className="block bg-gradient-to-r from-slate-600 to-slate-800 bg-clip-text text-transparent animate-slide-up-delay-1">
               Coffee Business
             </span>
           </h1>
 
           <p className="text-center text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed animate-slide-up-delay-2">
-            Comprehensive analytics and insights to help you make data-driven decisions, 
+            CITA Comprehensive analytics and insights to help you make data-driven decisions, 
             track performance, and grow your coffee venture with confidence.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up-delay-3">
             <Link 
               href="/dashboard/overview"
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5"
             >
               View Dashboard
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -40,7 +40,7 @@ export default function HomePage() {
 
             <Link 
               href="#features"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold border-2 border-gray-200 hover:border-amber-300 hover:bg-amber-50 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold border-2 border-gray-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 hover:scale-105"
             >
               Learn More
             </Link>
@@ -82,7 +82,7 @@ export default function HomePage() {
               icon={<Coffee className="w-8 h-8" />}
               title="Product Performance"
               description="Monitor inventory levels, analyze product profitability, and optimize your menu offerings."
-              gradient="from-amber-500 to-orange-500"
+              gradient="from-slate-500 to-slate-700"
               delay="200ms"
             />
 
@@ -106,7 +106,7 @@ export default function HomePage() {
               icon={<FileText className="w-8 h-8" />}
               title="Market Research"
               description="Document findings, track trends, and make informed strategic decisions based on data."
-              gradient="from-rose-500 to-red-500"
+              gradient="from-gray-500 to-slate-600"
               delay="500ms"
             />
 
@@ -115,23 +115,23 @@ export default function HomePage() {
       </section>
 
       {/* STATS SECTION */}
-      <section className="relative py-20 px-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
+      <section className="relative py-20 px-6 bg-gradient-to-r from-slate-700 to-slate-900 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
             
             <div className="animate-fade-in-up">
               <div className="text-5xl font-bold mb-2">10K+</div>
-              <div className="text-amber-100 text-lg">Orders Tracked</div>
+              <div className="text-slate-300 text-lg">Orders Tracked</div>
             </div>
 
             <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
               <div className="text-5xl font-bold mb-2">500+</div>
-              <div className="text-amber-100 text-lg">Products Analyzed</div>
+              <div className="text-slate-300 text-lg">Products Analyzed</div>
             </div>
 
             <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
               <div className="text-5xl font-bold mb-2">98%</div>
-              <div className="text-amber-100 text-lg">Customer Satisfaction</div>
+              <div className="text-slate-300 text-lg">Customer Satisfaction</div>
             </div>
 
           </div>
@@ -149,7 +149,7 @@ export default function HomePage() {
           </p>
           <Link 
             href="/dashboard/overview"
-            className="group inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+            className="group inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-slate-700 to-slate-900 text-white text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           >
             Get Started Now
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
@@ -176,7 +176,7 @@ function FeatureCard({
 }) {
   return (
     <div 
-      className="group relative bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-amber-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl animate-fade-in-up"
+      className="group relative bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl animate-fade-in-up"
       style={{ animationDelay: delay }}
     >
       <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} text-white mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
@@ -192,7 +192,7 @@ function FeatureCard({
       </p>
 
       <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <ArrowRight className="w-5 h-5 text-amber-600" />
+        <ArrowRight className="w-5 h-5 text-slate-600" />
       </div>
     </div>
   )
