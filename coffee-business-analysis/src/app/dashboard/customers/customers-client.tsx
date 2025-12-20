@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { formatCurrency, formatDate, getInitials } from '@/lib/utils'
 import { Users, Star, TrendingUp, Mail, Phone, ShoppingBag, Search, Plus, Edit, Trash2 } from 'lucide-react'
 import { CustomerModal } from '@/components/modals/customer-modal'
+import toast from 'react-hot-toast'
 
 interface Customer {
   id: string
@@ -37,7 +38,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // Filter customers based on search query
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setCustomers(initialCustomers)
@@ -52,9 +52,10 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
     }
   }, [searchQuery, initialCustomers])
 
-  // Handle create/update
   const handleSave = async (customerData: any) => {
     setLoading(true)
+    
+    const loadingToast = toast.loading(customerData.id ? 'Updating customer...' : 'Adding customer...')
     
     try {
       const isEditing = !!customerData.id
@@ -72,23 +73,26 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
         throw new Error(data.error || 'Failed to save customer')
       }
 
-      alert(isEditing ? 'Customer updated successfully!' : 'Customer added successfully!')
+      toast.success(isEditing ? '✅ Customer updated successfully!' : '✅ Customer added successfully!', {
+        id: loadingToast,
+      })
       
-      // Reload the page to refresh all data
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 800)
       
     } catch (error: any) {
       console.error('Error saving customer:', error)
-      alert(error.message || 'Failed to save customer. Please try again.')
-    } finally {
+      toast.error(`❌ ${error.message || 'Failed to save customer'}`, {
+        id: loadingToast,
+      })
       setLoading(false)
     }
   }
 
-  // Handle delete
   const handleDelete = async (customerId: string, customerName: string, orderCount: number) => {
     if (orderCount > 0) {
-      alert(`Cannot delete ${customerName}. This customer has ${orderCount} existing orders. Delete the orders first.`)
+      toast.error(`❌ Cannot delete ${customerName}. This customer has ${orderCount} existing orders.`, {
+        duration: 4000,
+      })
       return
     }
 
@@ -97,6 +101,7 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
     }
 
     setLoading(true)
+    const loadingToast = toast.loading('Deleting customer...')
 
     try {
       const response = await fetch(`/api/customers?id=${customerId}`, {
@@ -109,26 +114,26 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
         throw new Error(data.error || 'Failed to delete customer')
       }
 
-      alert('Customer deleted successfully!')
+      toast.success('✅ Customer deleted successfully!', {
+        id: loadingToast,
+      })
       
-      // Reload the page
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 800)
       
     } catch (error: any) {
       console.error('Error deleting customer:', error)
-      alert(error.message || 'Failed to delete customer. Please try again.')
-    } finally {
+      toast.error(`❌ ${error.message || 'Failed to delete customer'}`, {
+        id: loadingToast,
+      })
       setLoading(false)
     }
   }
 
-  // Open modal for editing
   const handleEdit = (customer: Customer) => {
     setEditingCustomer(customer)
     setIsModalOpen(true)
   }
 
-  // Open modal for adding
   const handleAdd = () => {
     setEditingCustomer(null)
     setIsModalOpen(true)
@@ -140,12 +145,9 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
-          <p className="mt-2 text-gray-600">
-            Manage your customer relationships and track loyalty.
-          </p>
+          <p className="mt-2 text-gray-600">Manage your customer relationships and track loyalty.</p>
         </div>
         
-        {/* ADD CUSTOMER BUTTON */}
         <button
           onClick={handleAdd}
           disabled={loading}
@@ -168,7 +170,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">All Customers</h2>
           
-          {/* SEARCH BAR */}
           <div className="relative w-96">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -189,7 +190,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
           </div>
         </div>
 
-        {/* Results count */}
         {searchQuery && (
           <div className="px-6 py-2 bg-slate-50 border-b border-gray-200">
             <p className="text-sm text-gray-600">
@@ -276,8 +276,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
                         </span>
                       )}
                     </td>
-                    
-                    {/* ACTION BUTTONS */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <button
@@ -305,7 +303,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
           </table>
         </div>
 
-        {/* Empty state */}
         {customers.length === 0 && (
           <div className="px-6 py-12 text-center">
             <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
@@ -355,7 +352,6 @@ export default function CustomersPageClient({ initialCustomers, stats }: Custome
         </div>
       </div>
 
-      {/* CUSTOMER MODAL */}
       <CustomerModal
         isOpen={isModalOpen}
         onClose={() => {
