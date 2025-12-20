@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import { formatCurrency } from '@/lib/utils'
-import { Package, AlertTriangle, DollarSign, Coffee, ShoppingBag, Plus, Edit, Trash2 } from 'lucide-react'
+import { Package, AlertTriangle, DollarSign, Coffee, ShoppingBag, Plus, Edit, Trash2, Download, Upload } from 'lucide-react'
 import { ProductModal } from '@/components/modals/product-modal'
+import { ImportModal } from '@/components/modals/import-modal'
+import { convertToCSV, downloadCSV, validateProductCSV } from '@/lib/csv-utils'
 import toast from 'react-hot-toast'
 
 interface Product {
@@ -34,6 +36,7 @@ interface ProductsPageProps {
 export default function ProductsPageClient({ initialProducts, stats }: ProductsPageProps) {
   const [products, setProducts] = useState(initialProducts)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -109,6 +112,41 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
     setIsModalOpen(true)
   }
 
+  // EXPORT TO CSV
+  const handleExport = () => {
+    const exportData = products.map(product => ({
+      name: product.name,
+      description: product.description || '',
+      category: product.category,
+      price: product.price,
+      cost: product.cost,
+      stock: product.stock,
+      profitMargin: product.profitMargin.toFixed(2)
+    }))
+
+    const headers = ['name', 'description', 'category', 'price', 'cost', 'stock', 'profitMargin']
+    const csv = convertToCSV(exportData, headers)
+    downloadCSV(csv, `products-${new Date().toISOString().split('T')[0]}.csv`)
+    
+    toast.success('✅ Products exported successfully!')
+  }
+
+  // IMPORT FROM CSV
+  const handleImport = async (data: any[]) => {
+    const response = await fetch('/api/products/import', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ products: data })
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Import failed')
+    }
+
+    return response.json()
+  }
+
   return (
     <div className="space-y-8">
       
@@ -118,14 +156,35 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
           <p className="mt-2 text-gray-600">Manage your product inventory and track performance.</p>
         </div>
         
-        <button
-          onClick={handleAdd}
-          disabled={loading}
-          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold hover:from-slate-800 hover:to-slate-950 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Plus className="w-5 h-5" />
-          Add Product
-        </button>
+        {/* ACTION BUTTONS */}
+        <div className="flex gap-3">
+          <button
+            onClick={handleExport}
+            disabled={loading || products.length === 0}
+            className="flex items-center gap-2 px-4 py-3 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Download className="w-5 h-5" />
+            Export
+          </button>
+          
+          <button
+            onClick={() => setIsImportModalOpen(true)}
+            disabled={loading}
+            className="flex items-center gap-2 px-4 py-3 border border-slate-300 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Upload className="w-5 h-5" />
+            Import
+          </button>
+        
+          <button
+            onClick={handleAdd}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold hover:from-slate-800 hover:to-slate-950 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Plus className="w-5 h-5" />
+            Add Product
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -229,6 +288,7 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
         </div>
       </div>
 
+      {/* MODALS */}
       <ProductModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -237,6 +297,16 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
         }}
         onSave={handleSave}
         product={editingProduct}
+      />
+
+      <ImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        title="Import Products"
+        templateHeaders={['name', 'description', 'category', 'price', 'cost', 'stock']}
+        validateFn={validateProductCSV}
+        importFn={handleImport}
+        exampleRow="Espresso,Rich espresso,Coffee,3.50,0.80,500"
       />
 
     </div>
