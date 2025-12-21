@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ShoppingCart, Package, Clock, CheckCircle, Plus, Trash2, Calendar, Download, Upload } from 'lucide-react'
+import { ShoppingCart, Package, Clock, CheckCircle, Plus, Trash2, Calendar, Download, Upload, Trash } from 'lucide-react'
 import { OrderModal } from '@/components/modals/order-modal'
 import { ImportModal } from '@/components/modals/import-modal'
 import { convertToCSV, downloadCSV, validateOrderCSV } from '@/lib/csv-utils'
@@ -132,6 +132,47 @@ export default function OrdersPageClient({ initialOrders, customers, products, s
     }
   }
 
+  // CLEAR ALL ORDERS
+  const handleClearAll = async () => {
+    if (!confirm(`⚠️ WARNING: This will delete ALL ${orders.length} orders permanently! This will also restore product stock and reset ALL customer stats (totalSpent, visitCount, loyaltyPoints). This action CANNOT be undone. Are you absolutely sure?`)) {
+      return
+    }
+
+    // Double confirmation
+    if (!confirm('This is your last chance! This will reset all analytics to zero. Click OK to proceed with deleting ALL orders.')) {
+      return
+    }
+
+    setLoading(true)
+    const loadingToast = toast.loading('Clearing all orders...')
+
+    try {
+      const response = await fetch('/api/orders/clear', {
+        method: 'DELETE'
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to clear orders')
+      }
+
+      toast.success(`✅ ${data.message}`, {
+        id: loadingToast,
+        duration: 3000
+      })
+      
+      setTimeout(() => window.location.reload(), 1000)
+      
+    } catch (error: any) {
+      console.error('Error clearing orders:', error)
+      toast.error(`❌ ${error.message || 'Failed to clear orders'}`, {
+        id: loadingToast,
+      })
+      setLoading(false)
+    }
+  }
+
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     setLoading(true)
     const loadingToast = toast.loading('Updating status...')
@@ -214,6 +255,16 @@ export default function OrdersPageClient({ initialOrders, customers, products, s
         
         {/* ACTION BUTTONS */}
         <div className="flex gap-3">
+          <button
+            onClick={handleClearAll}
+            disabled={loading || orders.length === 0}
+            className="flex items-center gap-2 px-4 py-3 border-2 border-red-300 text-red-600 rounded-xl font-semibold hover:bg-red-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Delete all orders"
+          >
+            <Trash className="w-5 h-5" />
+            Clear All
+          </button>
+
           <button
             onClick={handleExport}
             disabled={loading || orders.length === 0}
