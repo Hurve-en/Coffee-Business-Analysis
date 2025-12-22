@@ -5,6 +5,33 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
       
+      {/* NAVIGATION BAR */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Coffee className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-gray-900">CITA</span>
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/auth/login"
+              className="px-6 py-2 text-gray-700 font-medium hover:text-slate-900 transition-colors"
+            >
+              Sign In
+            </Link>
+            <Link 
+              href="/auth/signup"
+              className="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold hover:from-slate-800 hover:to-slate-950 transition-all shadow-md hover:shadow-lg"
+            >
+              Get Started
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       {/* HERO SECTION */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(100,116,139,0.08),transparent_50%)]" />
@@ -31,18 +58,18 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up-delay-3">
             <Link 
-              href="/dashboard/overview"
+              href="/auth/signup"
               className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5"
             >
-              View Dashboard
+              Get Started Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
 
             <Link 
-              href="#features"
+              href="/auth/login"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold border-2 border-gray-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 hover:scale-105"
             >
-              Learn More
+              Sign In
             </Link>
           </div>
         </div>
@@ -104,8 +131,8 @@ export default function HomePage() {
 
             <FeatureCard
               icon={<FileText className="w-8 h-8" />}
-              title="Market Research"
-              description="Document findings, track trends, and make informed strategic decisions based on data."
+              title="Multi-Tenant Support"
+              description="Each user gets their own isolated data. Perfect for multiple coffee shop locations."
               gradient="from-gray-500 to-slate-600"
               delay="500ms"
             />
@@ -120,18 +147,18 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
             
             <div className="animate-fade-in-up">
-              <div className="text-5xl font-bold mb-2">10K+</div>
-              <div className="text-slate-300 text-lg">Orders Tracked</div>
+              <div className="text-5xl font-bold mb-2">Unlimited</div>
+              <div className="text-slate-300 text-lg">Orders Per User</div>
             </div>
 
             <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-              <div className="text-5xl font-bold mb-2">500+</div>
-              <div className="text-slate-300 text-lg">Products Analyzed</div>
+              <div className="text-5xl font-bold mb-2">Secure</div>
+              <div className="text-slate-300 text-lg">Data Isolation</div>
             </div>
 
             <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-              <div className="text-5xl font-bold mb-2">98%</div>
-              <div className="text-slate-300 text-lg">Customer Satisfaction</div>
+              <div className="text-5xl font-bold mb-2">Free</div>
+              <div className="text-slate-300 text-lg">To Get Started</div>
             </div>
 
           </div>
@@ -145,17 +172,34 @@ export default function HomePage() {
             Ready to Grow Your Business?
           </h2>
           <p className="text-xl text-gray-600 mb-10">
-            Join successful coffee entrepreneurs using data to make better decisions.
+            Join coffee entrepreneurs using data to make better decisions. Create your free account today.
           </p>
           <Link 
-            href="/dashboard/overview"
+            href="/auth/signup"
             className="group inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-slate-700 to-slate-900 text-white text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           >
-            Get Started Now
+            Create Free Account
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
           </Link>
         </div>
       </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-gray-200 py-12 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+          <p className="text-gray-600 text-sm">
+            © 2025 CITA. Built for coffee businesses.
+          </p>
+          <div className="flex items-center gap-6 mt-4 md:mt-0">
+            <Link href="/auth/login" className="text-gray-600 hover:text-slate-900 text-sm transition-colors">
+              Sign In
+            </Link>
+            <Link href="/auth/signup" className="text-gray-600 hover:text-slate-900 text-sm transition-colors">
+              Sign Up
+            </Link>
+          </div>
+        </div>
+      </footer>
 
     </main>
   )
