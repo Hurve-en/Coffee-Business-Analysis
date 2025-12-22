@@ -1,25 +1,49 @@
-generator client {
-  provider = "prisma-client-js"
-}
+// This is your Prisma schema file with authentication support
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NEW: User model for authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed password
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations - each user owns their data
+  customers Customer[]
+  products  Product[]
+  orders    Order[]
+}
+
 model Customer {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
-  email         String   @unique
+  email         String    @unique
   phone         String?
   address       String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  totalSpent    Float    @default(0)
-  visitCount    Int      @default(0)
+  totalSpent    Float     @default(0)
+  visitCount    Int       @default(0)
+  loyaltyPoints Int       @default(0)
   lastVisit     DateTime?
-  loyaltyPoints Int      @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // NEW: Link to user (owner)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   orders        Order[]
+
+  @@index([userId]) // Fast queries by user
 }
 
 model Product {
@@ -34,53 +58,51 @@ model Product {
   isActive    Boolean     @default(true)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+
+  // NEW: Link to user (owner)
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   orderItems  OrderItem[]
+
+  @@index([userId]) // Fast queries by user
 }
 
 model Order {
-  id         String      @id @default(cuid())
-  customerId String
-  customer   Customer    @relation(fields: [customerId], references: [id])
-  orderDate  DateTime    @default(now())
-  total      Float
-  status     String      @default("completed")
-  paymentMethod String
-  items      OrderItem[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  orderDate     DateTime    @default(now())
+  total         Float
+  status        String      @default("pending")
+  paymentMethod String      @default("cash")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // NEW: Link to user (owner)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId    String
+  customer      Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  items         OrderItem[]
+
+  @@index([userId]) // Fast queries by user
+  @@index([customerId])
 }
 
 model OrderItem {
   id        String   @id @default(cuid())
-  orderId   String
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product  @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
   createdAt DateTime @default(now())
-}
-
-model MarketResearch {
-  id          String   @id @default(cuid())
-  title       String
-  category    String
-  description String
-  findings    String
-  date        DateTime @default(now())
-  source      String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model FinancialMetric {
-  id        String   @id @default(cuid())
-  date      DateTime
-  revenue   Float
-  expenses  Float
-  profit    Float
-  category  String
-  notes     String?
-  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
 }
