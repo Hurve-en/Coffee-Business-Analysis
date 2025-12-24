@@ -1,7 +1,5 @@
 /**
- * ROOT LAYOUT WITH SEO OPTIMIZATION
- * 
- * 
+ * ROOT LAYOUT WITH SEO OPTIMIZATION + MONITORING DASHBOARD
  */
 
 import type { Metadata, Viewport } from 'next'
@@ -9,6 +7,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { Toaster } from 'react-hot-toast'
+import { MonitoringDashboard } from '@/components/monitoring-dashboard'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -174,6 +173,7 @@ export default function RootLayout({
               },
             }}
           />
+          <MonitoringDashboard />
         </Providers>
       </body>
     </html>
