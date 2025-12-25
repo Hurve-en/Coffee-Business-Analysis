@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { formatCurrency, calculatePercentageChange } from '@/lib/utils'
 import { DollarSign, ShoppingBag, TrendingUp, ArrowRight } from 'lucide-react'
