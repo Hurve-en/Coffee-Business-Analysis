@@ -1,29 +1,20 @@
-/**
- * DASHBOARD LAYOUT WITH AUTHENTICATION
- * 
- * Updated with log out button and user info
- * 
- * This layout wraps ALL dashboard pages (/dashboard/*)
- * Provides consistent navigation and structure
- * 
- * STRUCTURE:
- * - Left sidebar with navigation links
- * - Top navbar with user info
- * - Main content area where pages render
- * - Mobile-responsive hamburger menu
- * 
- * FEATURES:
- * - Smooth animations
- * - Active link highlighting
- * - Collapsible on mobile
- * - Slate gray minimalist design
- */
-
 'use client'
+
+/**
+ * ENHANCED DASHBOARD LAYOUT
+ * 
+ * NEW FEATURES:
+ * - ✅ Collapsible sidebar (toggle button)
+ * - ✅ Saves preference to localStorage
+ * - ✅ Smooth animations
+ * - ✅ Keeps your existing slate theme
+ * - ✅ Mobile responsive (unchanged)
+ * - ✅ User info and logout (unchanged)
+ */
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { 
   LayoutDashboard, 
@@ -35,7 +26,8 @@ import {
   Menu,
   X,
   LogOut,
-  Settings
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -79,7 +71,23 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const { data: session } = useSession()
+
+  // Load sidebar state from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('sidebarCollapsed')
+    if (saved !== null) {
+      setSidebarCollapsed(JSON.parse(saved))
+    }
+  }, [])
+
+  // Save sidebar state to localStorage
+  const toggleSidebar = () => {
+    const newState = !sidebarCollapsed
+    setSidebarCollapsed(newState)
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(newState))
+  }
 
   const handleLogout = () => {
     if (confirm('Are you sure you want to logout?')) {
@@ -91,20 +99,31 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gray-50">
       
       {/* SIDEBAR - Desktop */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
+      <aside 
+        className={cn(
+          "hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ease-in-out",
+          sidebarCollapsed ? "lg:w-20" : "lg:w-72"
+        )}
+      >
         <div className="flex flex-col flex-grow bg-gradient-to-b from-slate-800 to-slate-900 overflow-y-auto">
           
           {/* Logo/Brand */}
           <div className="flex items-center flex-shrink-0 px-6 py-6 border-b border-slate-700">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            {sidebarCollapsed ? (
+              <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center mx-auto group hover:scale-110 transition-transform">
                 <Coffee className="w-6 h-6 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">CITA</h1>
-                <p className="text-xs text-slate-400">Business Analytics</p>
-              </div>
-            </Link>
+            ) : (
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Coffee className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-white">CITA</h1>
+                  <p className="text-xs text-slate-400">Business Analytics</p>
+                </div>
+              </Link>
+            )}
           </div>
 
           {/* Navigation Links */}
@@ -119,19 +138,25 @@ export default function DashboardLayout({
                   href={item.href}
                   className={cn(
                     'group flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200',
+                    sidebarCollapsed && 'justify-center',
                     isActive
                       ? 'bg-slate-700 text-white shadow-lg'
                       : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
                   )}
+                  title={sidebarCollapsed ? item.name : undefined}
                 >
                   <Icon className={cn(
-                    'w-5 h-5 transition-transform duration-200',
+                    'w-5 h-5 transition-transform duration-200 flex-shrink-0',
                     isActive && 'scale-110',
                     !isActive && 'group-hover:scale-110'
                   )} />
-                  <span>{item.name}</span>
-                  {isActive && (
-                    <div className="ml-auto w-1 h-6 bg-white rounded-full" />
+                  {!sidebarCollapsed && (
+                    <>
+                      <span>{item.name}</span>
+                      {isActive && (
+                        <div className="ml-auto w-1 h-6 bg-white rounded-full" />
+                      )}
+                    </>
                   )}
                 </Link>
               )
@@ -142,24 +167,61 @@ export default function DashboardLayout({
           <div className="flex-shrink-0 border-t border-slate-700 p-4">
             {session?.user && (
               <div className="space-y-2">
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-700/50">
-                  <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-white font-semibold">
-                    {session.user.name?.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{session.user.name}</p>
-                    <p className="text-xs text-slate-400 truncate">{session.user.email}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all"
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span>Logout</span>
-                </button>
+                {sidebarCollapsed ? (
+                  <>
+                    {/* Collapsed - Avatar Only */}
+                    <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-white font-semibold mx-auto cursor-pointer hover:scale-110 transition-transform" title={session.user.name || 'User'}>
+                      {session.user.name?.charAt(0).toUpperCase()}
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center justify-center px-4 py-3 text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all"
+                      title="Logout"
+                    >
+                      <LogOut className="w-5 h-5" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* Expanded - Full Info */}
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-700/50">
+                      <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-white font-semibold">
+                        {session.user.name?.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">{session.user.name}</p>
+                        <p className="text-xs text-slate-400 truncate">{session.user.email}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                )}
               </div>
             )}
+          </div>
+
+          {/* Toggle Button (Inside Sidebar) */}
+          <div className="flex-shrink-0 border-t border-slate-700 p-4">
+            <button
+              onClick={toggleSidebar}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-700 rounded-xl transition-all"
+              title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              {sidebarCollapsed ? (
+                <ChevronRight className="w-5 h-5" />
+              ) : (
+                <>
+                  <ChevronLeft className="w-5 h-5" />
+                  <span>Collapse</span>
+                </>
+              )}
+            </button>
           </div>
 
         </div>
@@ -265,59 +327,88 @@ export default function DashboardLayout({
       )}
 
       {/* MAIN CONTENT AREA */}
-      <main className="lg:pl-72 pt-16 lg:pt-0">
+      <main 
+        className={cn(
+          "transition-all duration-300 ease-in-out pt-16 lg:pt-0",
+          sidebarCollapsed ? "lg:pl-20" : "lg:pl-72"
+        )}
+      >
         <div className="px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </div>
       </main>
+
+      {/* FLOATING TOGGLE BUTTON (Optional - Desktop Only) */}
+      <button
+        onClick={toggleSidebar}
+        className={cn(
+          "hidden lg:flex fixed bottom-8 z-40",
+          "items-center justify-center",
+          "w-10 h-10 bg-white border-2 border-slate-300 rounded-full",
+          "shadow-lg hover:shadow-xl hover:scale-110",
+          "transition-all duration-300",
+          sidebarCollapsed ? "left-16" : "left-60"
+        )}
+        title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      >
+        {sidebarCollapsed ? (
+          <ChevronRight className="w-5 h-5 text-slate-700" />
+        ) : (
+          <ChevronLeft className="w-5 h-5 text-slate-700" />
+        )}
+      </button>
 
     </div>
   )
 }
 
 /**
- * LEARNING NOTES:
+ * NEW FEATURES ADDED:
  * 
- * 1. What is 'use client'?
- *    This makes it a Client Component (can use useState, onClick, etc.)
- *    Without it, Next.js treats it as Server Component
+ * 1. Collapsible Sidebar
+ *    - Click "Collapse" button at bottom of sidebar
+ *    - OR click floating button (bottom-left)
+ *    - Sidebar shrinks to icon-only mode
+ *    - Saves your preference to localStorage
  * 
- * 2. Why usePathname()?
- *    Tells us which page we're on so we can highlight active link
+ * 2. Icon-Only Mode
+ *    - Shows only icons when collapsed
+ *    - Hover shows tooltips with page names
+ *    - Avatar shows user initial
+ *    - Space-efficient for smaller screens
  * 
- * 3. What is cn() doing?
- *    Merging Tailwind classes and handling active/inactive states
+ * 3. Smooth Animations
+ *    - Sidebar width transitions smoothly
+ *    - Content area adjusts automatically
+ *    - Icons and text fade in/out
  * 
- * 4. How does mobile menu work?
- *    - useState tracks if menu is open
- *    - Button toggles the state
- *    - Sidebar shows/hides based on state
- *    - Backdrop closes menu when clicked
+ * 4. Persistent State
+ *    - Remembers if you collapsed it
+ *    - Saves to localStorage
+ *    - Restores on page refresh
  * 
- * 5. What's with lg: prefix?
- *    Tailwind responsive prefixes:
- *    - No prefix = mobile
- *    - lg: = large screens (1024px+)
- *    - Example: "hidden lg:flex" = hide on mobile, show on desktop
- * 
- * 6. How to add a new page?
- *    Just add to the navigation array at the top!
- * 
- * 7. Can I change colors?
- *    Yes! Search for slate-800, slate-700, etc. and change to your color
- * 
- * 8. What if I want a different logo?
- *    Replace the Coffee icon and text in the logo section
+ * 5. Mobile Unchanged
+ *    - Mobile menu works exactly the same
+ *    - No changes to mobile experience
+ *    - Toggle only appears on desktop
  */
 
 /**
- * CUSTOMIZATION IDEAS:
+ * HOW TO USE:
  * 
- * - Add user dropdown menu (logout, settings, profile)
- * - Add notifications bell icon in top navbar
- * - Add search bar in top navbar
- * - Add breadcrumbs showing current location
- * - Add collapsible sidebar on desktop
- * - Add dark/light mode toggle
- * - Add badges showing new items (Orders: 5)
+ * Desktop:
+ * - Click "Collapse" at bottom of sidebar
+ * - Or click floating button (left side)
+ * - Sidebar shrinks to icons only
+ * - Click again to expand
+ * 
+ * Mobile:
+ * - Works exactly as before
+ * - Hamburger menu (unchanged)
+ * 
+ * Customization:
+ * - Change collapsed width: lg:w-20 (currently 20 = 5rem)
+ * - Change expanded width: lg:w-72 (currently 72 = 18rem)
+ * - Remove floating button: delete the button at the end
+ * - Add keyboard shortcut: add useEffect with keyboard listener
  */
